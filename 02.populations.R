@@ -28,6 +28,7 @@ bei.extra$elev
 
 elevation <- bei.extra$elev
 plot(elevation)
+
 # selecting the first element
 
 elevation2 <- bei.extra[[1]]
@@ -53,3 +54,24 @@ c1<- colorRampPalette(c("black", "red", "orange", "yellow"))(100)
 plot(density_map, col=c1)
 
 #the first color the eyes sees and focus on is yellow, so we use it (higher values)
+
+c1<- colorRampPalette(c("pink", "darkorchid",  "darkmagenta", "darkgoldenrod3", "yellow"))(1000)
+
+plot(density_map, col=c1)
+
+#multiframing(mf) with function par, stating how many empty rows and col to fill
+par(mfrow=c(1,2))
+
+# now we fill the slots
+par(mfrow=c(1,2))
+plot(density_map)
+plot(elevation2)
+
+#to do one column with two rows
+par(mfrow=c(2,1))
+plot(density_map)
+plot(elevation2)
+
+#multiframe with 3 plots (bei, density, elevation)
+# we see that high altitude area corresponds to low density distribution of trees (general knowledge)
+#install terra and esdm
