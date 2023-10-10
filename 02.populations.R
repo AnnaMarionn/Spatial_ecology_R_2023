@@ -3,9 +3,9 @@
 # a package is needed for point pattern analysis
 # adding package from cran??
 install.packages("spatstat")
-libraru(spatstat)
+library(spatstat)
 
-#let's use the bei dataset
+#let's use the bei dataset (rio pexioto tree distribution, every point is a tree from gps tracking)
 # data description:
 #https://CRAN.R-project.org/package=spatstat
 
@@ -32,3 +32,24 @@ plot(elevation)
 
 elevation2 <- bei.extra[[1]]
 plot (elevation2)
+
+#let's build the density map -> function density in the spatstat package to pass from points to continuous surface (interpolation)
+density_map <- density(bei)
+
+#from points to PIXELS, representing the landscape. we can plot an image
+
+plot(density_map)
+# to put the points on top of an image, if we use plot we erase the previous raster, to ADD we use the function points
+#blue green and red should be avoided together for colorblind people
+
+points(bei, cex=.2)
+
+#to change the colors (saved in R with """"), array of colors concatenated to form a variable to use as col in the function plot
+
+colorRampPalette(c("gray", "red", "orange", "yellow"))
+
+#how many different colors we want to use to pass from a color to another)
+c1<- colorRampPalette(c("black", "red", "orange", "yellow"))(100)
+plot(density_map, col=c1)
+
+#the first color the eyes sees and focus on is yellow, so we use it (higher values)
