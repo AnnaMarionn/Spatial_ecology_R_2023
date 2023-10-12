@@ -29,7 +29,7 @@ bei.extra$elev
 elevation <- bei.extra$elev
 plot(elevation)
 
-# selecting the first element
+# selecting the first element, doble praenthesis cus double
 
 elevation2 <- bei.extra[[1]]
 plot (elevation2)
@@ -75,3 +75,6 @@ plot(elevation2)
 #multiframe with 3 plots (bei, density, elevation)
 # we see that high altitude area corresponds to low density distribution of trees (general knowledge)
 #install terra and esdm
+
+#density and dispersion of species (simple introduction code)
+# start of community ecology using sdm package and terra package
