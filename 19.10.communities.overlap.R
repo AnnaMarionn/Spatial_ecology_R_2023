@@ -8,7 +8,7 @@ summary(kerinci) #sps=species
 
 #now we only want the tiger
 #we use sql: we use the name of the data and square parenthesis and $ to relate data ans column
-tiger <- kerinci[kerinci$sps=="tiger", ]
+tiger <- kerinci[kerinci$Sps=="tiger", ]
 #now we have a "new dataset with only tigers
 
 #to get from linear to radiant for time: we multiply time by 2pi
@@ -28,7 +28,7 @@ timetiger <- tiger$TimeRad
 densityPlot(timetig, rug=TRUE)
 
 #now with macaque
-macaque <- kerenci[kerinci$sps=="macaque",]
+macaque <- kerenci[kerinci$Sps=="macaque",]
 timemac <- macaque$TimeRad
 densityPlot(timemac, rug=TRUE)
 
