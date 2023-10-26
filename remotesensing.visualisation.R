@@ -19,3 +19,22 @@ library(terra)
 
 band2 <- im.import("sentinel.dolomites.b2.tif")
 band2 #to get the information like resolution, coordinate system,...
+
+#26/10
+library(imageRy)
+library(terra)
+
+#theory about coordinates
+
+#let's build a new color palette(100 is the gradient)
+
+clb <- colorRampPalette(c("dark gray","gray","light gray")) (100)
+plot(band2, col=clb)
+
+#the results show reflectance
+#now we import the green band data from Sentinel(band3)
+
+band3 <- im.import("sentinel.dolomites.b3.tif")
+band3
+
+plot(band3. col=clb)
