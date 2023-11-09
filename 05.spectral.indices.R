@@ -68,3 +68,21 @@ plot(dvi1992, col=cl)
 
 dvi2006=m2006[[1]]-m2006[[2]]
 plot(dvi2006, col=cl)
+
+#NDVI used for plant diversity, ranges from -1 to 1 (riguardare)
+#to get ndvi= you normalize the subtraction (NIR-RED) by the sum of NIR+RED
+#less related to n of bits, dvi depends on the ??, ndvi has always the same range
+#to calculate ndvi:
+
+ndvi1992= dvi1992/(m1992[[1]]+m1992[[2]])
+plot(ndvi1992, col=cl)
+ndvi2006= dvi2006/ (m2006[[1]]-m2006[[2]])
+plot(ndvi2006, col=cl)
+
+#to get them together
+par(mfrow=c(1,2))
+plot(ndvi1992, col=cl)
+plot(ndvi2006, col=cl)
+
+#to speed up calculation, without writing the formula each time: im.ndvi)
+ndvi2006a<- im.ndvi(m2006, 1, 2)
