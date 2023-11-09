@@ -31,3 +31,40 @@ im.plotRGB(m2006, r=2, g=3, b=1)
 
 library(ggplot2)
 library(viridis)
+
+#9_11
+#matogrosso, we take the image first, then the bands
+m1992<- im.import("matogrosso_l5_1992219_lrg.jpg")
+#here we have infrared, red and green bands in this specific order
+#components:blue, green, red ("channel") -->bands 123 (1=infrared)
+#based on the order (and in which channel we put the infrared) we see the vegetal part in a certain color (bgr)
+m2006 <- im.import("matogrosso_ast_2006209_lrg.jpg")
+#we see the difference on the location
+
+#today, we build multiframe with the two images
+par(mfrow=c(1,2))
+im.plotRGB(m1992, 2, 1, 3)
+im.plotRGB(m2006, 2, 1, 3)
+
+#to get info about the image: run the name of the image
+#now we plot the first element of m1992:
+plot(m1992[[1]])
+#we see that the range of reflectance gets to 255, why? reflectance0 ratio of reflected and incident radiant flux
+#we're gonna rescale by using bits (shannon)--Z every piece of infomation can either be 0 or 1 (binary code)
+#with two bits you can get 4 different information ("0","1","2","3"), from 3 bits to 8 info, with 4--> 16
+#many info is stored in 8 bit
+#DVI=NIR-RED
+#bands: 1=NIR, 2=RED, 3=GREEN
+
+dvi1992=m1992[[1]]-m1992[[2]]
+plot(dvi1992)
+
+#from the image we get info about health of the forest (the greener, the healthier)
+#to change the palette:
+cl <- colorRampPalette(c("darkblue", "yellow", "red", "black"))(100) # specifying a color scheme
+plot(dvi1992, col=cl)
+#here we don't have rgb, but a single layer (from the subtraction nir-red)
+#for dvi2006:
+
+dvi2006=m2006[[1]]-m2006[[2]]
+plot(dvi2006, col=cl)
