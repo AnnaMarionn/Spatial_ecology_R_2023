@@ -29,3 +29,19 @@ plotRGB(najaaug, r=1, g=2, b=3)
 najadif=naja[[1]] - najaaug[[1]]
 cl<-colorRampPalette(c("brown", "gray", "orange"))(100)
 plot(najadif, col=cl)
+
+#28/11/23
+##copernicus data
+##LAI leaf area index (also accounts for thickness)
+## FCOVER= how big the fractioon of groung covered
+##FAPAR--> red band used by plants for photosynthesis. It is the quantity of solar radiation used
+## NDVI= normalized difference that indicate greenness of the biomes.
+## VCI= current value of ndvi measured and compared with previous years, expressed in percentage.
+## VPI for long time statistics. productivity is measured in biomass--> energy pyramid through throphic levels
+## dry matter productivity: measured by removing plants from the site then removing eater to compare the weight
+## burnt area
+## soil water index
+## top of canopy reflectance
+## land surface temperature
+## guardare presentazioni: LSWT, water quality, estimate for water bodies over the planet
+## cryosphere, snow++-****************
