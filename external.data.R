@@ -44,4 +44,6 @@ plot(najadif, col=cl)
 ## top of canopy reflectance
 ## land surface temperature
 ## guardare presentazioni: LSWT, water quality, estimate for water bodies over the planet
+
+
 ## cryosphere, snow++-****************
