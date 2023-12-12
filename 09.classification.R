@@ -93,8 +93,15 @@ tabout
 
 #we now need a package: (ggplot2)
 
-# final plot, colors related to the class, barplot (human one color, forest another)
+# final plot, defining easthetics and the type of graph, colors related to the class, barplot (human one color, forest another)
 p1 <- ggplot(tabout, aes(x=class, y=y1992, color=class)) + geom_bar(stat="identity", fill="white")
 
 p2 <- ggplot(tabout, aes(x=class, y=y2006, color=class)) + geom_bar(stat="identity", fill="white")
 
+##patchwork
+p1+ p2
+
+##problem: different scales--> to rescale: we add "ylim"
+p1 <- ggplot(tabout, aes(x=class, y=y1992, color=class)) + geom_bar(stat="identity", fill="white") + ylim(c(0,100))
+p2 <- ggplot(tabout, aes(x=class, y=y2006, color=class)) + geom_bar(stat="identity", fill="white") + ylim(c(0,100))
+p1 + p2
