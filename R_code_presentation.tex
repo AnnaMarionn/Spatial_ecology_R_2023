@@ -1,1 +1,194 @@
+\documentclass{beamer}
+\usepackage{graphicx} % Required for inserting images
+% usetheme function to change layout
+\usetheme{Frankfurt}
+%
+%
+%change colour of theme
+\usecolortheme{seahorse}
+%
+\title{Spacial analysis of Montello area}
+\author{Marion Anna}
+\date{July 2025}
 
+\begin{document}
+
+\maketitle
+
+
+\section{Introduction}
+
+
+\begin{frame}{Aim of the project}
+The aim of the project is to analyze the Montello area, in the Treviso province  of the Veneto region. Specifically, the area of "Grave di Ciano" is regard \begin{itemize}
+        \item Grave di Ciano \\
+        10.82428, 11.80481, 43.71259, 44.15045 (3831 km2)\\
+        - Comparison 2016-2024
+        \bigskip
+        \item Bilancino Lake \\
+        11.20228, 11.42716, 43.92792, 44.04765 (240 km2)\\
+        - Comparison December-July 2023
+        \bigskip
+        \item Brento Cave of Serena stone \\
+        11.32187, 11.52237, 44.08956, 44.1792 (160 km2) \\
+        - Biodiversity analysis
+        \bigskip
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Data Collection}
+Sentinel 2 - Copernicus Open Hub
+\begin{itemize}
+    \item Select area of interest
+    \item Select dates of interest
+    \item Analytical image
+    \item Image format: JPG (no georeference)
+    \item Coordinate system: WGS 84 (EPSG:4326) 
+    \item Download of all raw layers
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Libraries}
+To complete the project the following libraries were used:
+    \begin{itemize}
+        \item terra
+        \item imageRy
+        \item ggplot2
+        \item viridis
+    \end{itemize}
+\end{frame}
+
+
+\section{Grave di Ciano}
+
+
+\begin{frame}{Grave di Ciano}
+    \begin{columns}
+        \column{0.5\textwidth}
+        \centering
+        \includegraphics[width=1\textwidth]{Map_-_IT_-_Firenze_-_Comunità_Montana_Mugello.svg.png}
+         
+        \column{0.5\textwidth}
+        \centering
+        \includegraphics[width=1\textwidth]{mugello.png}
+    \end{columns} 
+\end{frame}
+
+\begin{frame}{Import of the 4 bands B2, B3, B4, B8}
+    \centering
+Function rast() from terra
+    \begin{columns}
+        \column{0.5\textwidth}
+        \centering
+        \includegraphics[width=1\textwidth]{Bends 2016.png}
+        \caption{2016}
+         
+        \column{0.5\textwidth}
+        \centering
+        \includegraphics[width=1\textwidth]{Bands 2024.png}
+        \caption{2024}
+    \end{columns} 
+\end{frame}
+
+\begin{frame}{Stack of the four bands}
+     \centering
+    c(B2, B3, B4, B8)
+    \includegraphics[width=1\textwidth]{Stackvir.png}
+\end{frame}
+
+\begin{frame}{True color}
+     \centering
+     im.plotRGB(stack, 3, 2, 1)
+    \includegraphics[width=1\textwidth]{Mreality.png}
+\end{frame}
+
+\begin{frame}{False color}
+     \centering
+     im.plotRGB(stack, 4, 3, 2)
+    \includegraphics[width=1\textwidth]{Mfalse.png}
+\end{frame}
+
+\begin{frame}{SWIR (Short Wave Infrared)}
+     \centering
+     Different stack :  B12, B8A, B04 \\
+     im.plotRGB(stack, 3, 2, 1)
+    \includegraphics[width=1\textwidth]{Mswir.png} 
+\end{frame}
+
+
+\section{2022 Drought}
+
+
+\begin{frame}{2022 Drought}
+     \centering
+     Area (11.20228, 11.42716, 43.92792, 44.04765)
+    \includegraphics[width=1\textwidth]{Bilancino.png}
+\end{frame}
+
+\begin{frame}{NDWI (Normalized Difference Water Index) }
+     \centering
+     \begin{equation}
+        NDWI = \frac{B03 - B08}{B03 +B08}
+     \end{equation}
+    \includegraphics[width=1\textwidth]{Rplot.png}
+\end{frame}
+
+\begin{frame}{Difference }
+     \centering
+    \includegraphics[width=1\textwidth]{NDWIdiff.png}
+\end{frame}
+
+\begin{frame}{Classification}
+    \centering
+    \begin{columns}
+        \column{0.5\textwidth}
+        \centering
+        July
+        \smallskip
+        \includegraphics[width=1\textwidth]{lcalss.png}
+        \includegraphics[width=1\textwidth]{Graphj.png}
+         
+        \column{0.5\textwidth}
+        \centering
+        December
+        \smallskip
+        \includegraphics[width=1\textwidth]{dclass.png}
+        \includegraphics[width=1\textwidth]{Graphd.png}
+    \end{columns} 
+\end{frame}
+
+
+\section{Variability analysis}
+
+
+\begin{frame}{Variability analysis}
+     \centering
+     Area (11.32187, 11.52237, 44.08956, 44.1792)
+    \includegraphics[width=1\textwidth]{cave.png}
+\end{frame}
+
+ \begin{frame}{NDVI (Normalized Difference Vegetation Index) }
+     \centering
+     \begin{equation}
+        NDVI = \frac{B08 - B04}{B08 + B04}
+     \end{equation}
+     \smallskip
+    \includegraphics[width=0.7\textwidth]{ndvinew.png}
+\end{frame}
+
+\begin{frame}{Principal component analysis PCA}
+    im.pca() on stack of the four bands B02, B03, B04, B08
+    \centering
+    \includegraphics[width=0.9\textwidth]{pca.png} 
+\end{frame}
+
+\begin{frame}{Variability}
+    focal(pc1, matrix(1/9, 3, 3), sd)
+    \centering
+    \bigskip
+    \includegraphics[width=\textwidth]{varmagma.png}   
+\end{frame}
+
+
+
+\end{document}
