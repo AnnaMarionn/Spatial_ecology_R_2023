@@ -1,6 +1,7 @@
 \documentclass{beamer}
 \usepackage{graphicx} % Required for inserting images
 % usetheme function to change layout
+
 \usetheme{Frankfurt}
 %
 %
@@ -18,20 +19,29 @@
 
 \section{Introduction}
 
+\begin{frame}{Area: Montello and Grave di Ciano}
+The Montello hill is a key natural landmark in Veneto, characterized by diverse vegetation and land use patterns. In particular, the Grave di Ciano is a \textbf{protected riverine area}, part of the Natura 2000 network, hosting rare habitats and high biodiversity. With an extension of about 940 hectares, it includes dry grasslands, riparian woodlands, and wet habitats. This area is currently \textbf{threatened} by a proposed flood retention basin project.
+
+\end{frame}
+
+\begin{frame}
+\includegraphics[width=1\textwidth]{Real_colors_2024_grave.png}
+\end{frame}
 
 \begin{frame}{Aim of the project}
-The aim of the project is to analyze the Montello area, in the Treviso province  of the Veneto region. Specifically, the area of "Grave di Ciano" is regard \begin{itemize}
-        \item Grave di Ciano \\
-        10.82428, 11.80481, 43.71259, 44.15045 (3831 km2)\\
-        - Comparison 2016-2024
+This study aims to:
+\begin{itemize}
+        \item Land cover change \\
+        Analyze land cover changes over recent years in the Montello area.\\
+        - Comparison 2016-2023
         \bigskip
-        \item Bilancino Lake \\
-        11.20228, 11.42716, 43.92792, 44.04765 (240 km2)\\
-        - Comparison December-July 2023
+        \item 2022 drought \\
+        Assess the impact of the 2022 drought on vegetation health in Grave di Ciano.\\
+        - Comparison summer 2019-2022
         \bigskip
-        \item Brento Cave of Serena stone \\
-        11.32187, 11.52237, 44.08956, 44.1792 (160 km2) \\
-        - Biodiversity analysis
+        \item Variability analysis \\
+        Investigate spatial variability and heterogeneity of vegetation in the threatened area \\
+        - Summer 2025
         \bigskip
     \end{itemize}
 \end{frame}
@@ -41,10 +51,9 @@ Sentinel 2 - Copernicus Open Hub
 \begin{itemize}
     \item Select area of interest
     \item Select dates of interest
-    \item Analytical image
-    \item Image format: JPG (no georeference)
-    \item Coordinate system: WGS 84 (EPSG:4326) 
-    \item Download of all raw layers
+    \item Image format: jp2
+    \item Coordinate system: TM Zone 32N (EPSG:32632)
+    \item Download of all raw bands
 \end{itemize}
 \end{frame}
 
@@ -59,134 +68,76 @@ To complete the project the following libraries were used:
 \end{frame}
 
 
-\section{Grave di Ciano}
+\section{Land cover change}
 
 
-\begin{frame}{Grave di Ciano}
-    \begin{columns}
-        \column{0.5\textwidth}
+\begin{frame}{False color comparison}
         \centering
-        \includegraphics[width=1\textwidth]{Map_-_IT_-_Firenze_-_Comunità_Montana_Mugello.svg.png}
-         
-        \column{0.5\textwidth}
-        \centering
-        \includegraphics[width=1\textwidth]{mugello.png}
-    \end{columns} 
+        Plotting false color view to enhance vegetation:
+        \includegraphics[width=1\textwidth]{FC_comparison.png}
 \end{frame}
 
-\begin{frame}{Import of the 4 bands B2, B3, B4, B8}
-    \centering
-Function rast() from terra
-    \begin{columns}
-        \column{0.5\textwidth}
-        \centering
-        \includegraphics[width=1\textwidth]{Bends 2016.png}
-        \caption{2016}
-         
-        \column{0.5\textwidth}
-        \centering
-        \includegraphics[width=1\textwidth]{Bands 2024.png}
-        \caption{2024}
-    \end{columns} 
-\end{frame}
 
-\begin{frame}{Stack of the four bands}
+\begin{frame}{Classification using NDVI}
      \centering
-    c(B2, B3, B4, B8)
-    \includegraphics[width=1\textwidth]{Stackvir.png}
+        \begin{equation}
+        NDVI=\frac{NIR-RED}{NIR+RED}
+        \end{equation} 
+    \includegraphics[width=1\textwidth]{NDVIClassification2016-2023.png}
 \end{frame}
 
-\begin{frame}{True color}
+\begin{frame}{Land cover change}
      \centering
-     im.plotRGB(stack, 3, 2, 1)
-    \includegraphics[width=1\textwidth]{Mreality.png}
+    \includegraphics[width=1\textwidth]{Land_cover_change_stackedbarplot.png}
 \end{frame}
-
-\begin{frame}{False color}
-     \centering
-     im.plotRGB(stack, 4, 3, 2)
-    \includegraphics[width=1\textwidth]{Mfalse.png}
-\end{frame}
-
-\begin{frame}{SWIR (Short Wave Infrared)}
-     \centering
-     Different stack :  B12, B8A, B04 \\
-     im.plotRGB(stack, 3, 2, 1)
-    \includegraphics[width=1\textwidth]{Mswir.png} 
-\end{frame}
-
 
 \section{2022 Drought}
 
 
-\begin{frame}{2022 Drought}
+\begin{frame}{Grave di Ciano- Bands}
      \centering
-     Area (11.20228, 11.42716, 43.92792, 44.04765)
-    \includegraphics[width=1\textwidth]{Bilancino.png}
+    \includegraphics[width=1\textwidth]{2024_bands.png}
 \end{frame}
+
+\begin{frame}{Real color comparison}
+     \centering
+    \includegraphics[width=1\textwidth]{June-August_2019-2022.png}
+\end{frame}
+
+\begin{frame}{Composite SWIR - 2022}
+     \centering
+    \includegraphics[width=1\textwidth]{swir_jun_aug.png}
+\end{frame}
+
 
 \begin{frame}{NDWI (Normalized Difference Water Index) }
      \centering
+     Gao's NDWI (1996). Comparison August 2019-2022
      \begin{equation}
-        NDWI = \frac{B03 - B08}{B03 +B08}
+        NDWI = \frac{NIR - SWIR2}{NIR +SWIR2}
      \end{equation}
-    \includegraphics[width=1\textwidth]{Rplot.png}
+    \includegraphics[width=1\textwidth]{NDWIDiff_19-22.png}
 \end{frame}
-
-\begin{frame}{Difference }
-     \centering
-    \includegraphics[width=1\textwidth]{NDWIdiff.png}
-\end{frame}
-
-\begin{frame}{Classification}
-    \centering
-    \begin{columns}
-        \column{0.5\textwidth}
-        \centering
-        July
-        \smallskip
-        \includegraphics[width=1\textwidth]{lcalss.png}
-        \includegraphics[width=1\textwidth]{Graphj.png}
-         
-        \column{0.5\textwidth}
-        \centering
-        December
-        \smallskip
-        \includegraphics[width=1\textwidth]{dclass.png}
-        \includegraphics[width=1\textwidth]{Graphd.png}
-    \end{columns} 
-\end{frame}
-
 
 \section{Variability analysis}
 
 
-\begin{frame}{Variability analysis}
+\begin{frame}{Bands comparison}
      \centering
-     Area (11.32187, 11.52237, 44.08956, 44.1792)
-    \includegraphics[width=1\textwidth]{cave.png}
+    \includegraphics[width=1\textwidth]{2025_pairs.png}
 \end{frame}
 
- \begin{frame}{NDVI (Normalized Difference Vegetation Index) }
-     \centering
-     \begin{equation}
-        NDVI = \frac{B08 - B04}{B08 + B04}
-     \end{equation}
-     \smallskip
-    \includegraphics[width=0.7\textwidth]{ndvinew.png}
-\end{frame}
 
-\begin{frame}{Principal component analysis PCA}
-    im.pca() on stack of the four bands B02, B03, B04, B08
+\begin{frame}{Standard Deviation and PCA}
     \centering
-    \includegraphics[width=0.9\textwidth]{pca.png} 
+    Standard deviation calculated on NIR band and on PC1 through moving window (focal sd).
+    \includegraphics[width=0.9\textwidth]{SD_analysis.png} 
 \end{frame}
 
-\begin{frame}{Variability}
-    focal(pc1, matrix(1/9, 3, 3), sd)
-    \centering
-    \bigskip
-    \includegraphics[width=\textwidth]{varmagma.png}   
+\begin{frame}{Thank you for your attention!
+ My GitHub profile:\url{https://github.com/AnnaMarionn}
+     \centering}
+    
 \end{frame}
 
 
