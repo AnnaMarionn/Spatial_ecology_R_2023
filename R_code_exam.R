@@ -38,7 +38,6 @@ import_crop <- function(year, band, ext, path = ".")
   r <- rast(filename)
   crop(r, ext)
 
-
 # I define the baseline bands that I will import for each date:
 bands <- c("02", "03", "04", "08")
 
@@ -56,6 +55,7 @@ ext_vegetation <- ext(735950, 738500, 5079750, 5081300)
 # extents are in TM Zone 32N coordinates (EPSG:32632), in meters.
 
 ###### 1) Land cover analysis: 2016-2023 - Montello ######
+
 # Objective: study the land cover change between 2016 and 2023 in the Montello area.
 # To do that, I use thresholds of the NDVI to classify the area
 # and get the percentages of each category trough the years.
@@ -89,11 +89,11 @@ ndvi_2016 <- (bands_2016$B08 - bands_2016$B04) /
 ndvi_2023 <- (bands_2023$B08 - bands_2023$B04) /
   (bands_2023$B08 + bands_2023$B04)
 
-# 1) im.classify(): automatic grouping through k-means clustering
+# 1) im.classify(): automatic grouping through k-means clustering.
 classified2016 <- im.classify(ndvi_2016)
 classified2023 <- im.classify(ndvi_2023)
-# This method classifies the are in 3 main categories 
-# (1-Water and Human settlements, 2-Stressed Vegetation, 3-Healthy Vegetation)
+# This method classifies the area in 3 main categories 
+# (1-Water and Human settlements, 2-Stressed Vegetation, 3-Healthy Vegetation).
 
 # 2) NDVI thresholds from literature:
 class_matrix <- matrix(c(
@@ -105,15 +105,14 @@ class_matrix <- matrix(c(
 ndvi_2016_class <- classify(ndvi_2016, rcl = class_matrix)
 ndvi_2023_class <- classify(ndvi_2023, rcl = class_matrix)
 
-# Plotting the classification:
+# Plotting the classifications:
 par(mfrow=c(2,2))
 plot(classified2016, col=viridisc, main ="NDVI 2016 k-means")
 plot(classified2023, col=viridisc, main ="NDVI 2023 k-means")
 plot(ndvi_2016_class, col= viridisc, main="NDVI 2016")
 plot(ndvi_2023_class, col=viridisc, main="NDVI 2023")
 
-# Using the frequencies for each class, I create stacked barplots comparing
-# how land use changed from 2016 to 2023:
+# Using the frequencies for each class, I create stacked barplots comparing how land use changed from 2016 to 2023:
 freq_2016 <- freq(ndvi_2016_class)
 percent_2016 <- freq_2016$count / sum(freq_2016$count) * 100
 
@@ -125,11 +124,9 @@ print(data.frame(Class=freq_2016$value, Percent2016=percent_2016, Percent2023=pe
 # Visualizing the change through the years:
 class_names <- c("Water/Human", "Grassland/Stressed vegetation", "Healthy vegetation")
 
-df <- data.frame(
-  Class = rep(class_names, times = 2),
-  Percentage = c(percent_2016, percent_2023),
-  Year = rep(c("2016", "2023"), each = length(class_names))
-)
+df <- data.frame(Class = rep(class_names, times = 2),
+                 Percentage = c(percent_2016, percent_2023),
+                 Year = rep(c("2016", "2023"), each = length(class_names)))
 
 ggplot(df, aes(x = Year, y = Percentage, fill = Class, label = round(Percentage, 1))) +
   geom_bar(stat = "identity") +
@@ -144,8 +141,8 @@ ggplot(df, aes(x = Year, y = Percentage, fill = Class, label = round(Percentage,
 # Area of interest: Grave di Ciano
 # A protected Natura 2000 site hosting rare habitats and species of high conservation value.
 # Located along the Piave River for about 940 hectares, it includes dry grasslands, riparian woodlands, and wet habitats.
-# The area is currently under threat from a proposed flood retention basin project that would impact
-# around 500 hectares of ecosystem.
+# The area is currently under threat from a proposed flood retention basin project that would impact around 500 hectares of ecosystem.
+                     
 # First: visualizing the area (2024)
 year2024lug <- "20240706T100601"
 bands_2024lug <- lapply(bands, function(b) import_crop(year2024lug, b, ext_grave))
@@ -165,7 +162,7 @@ dev.off()
 # In 2022 the Veneto region experienced, along with most of Italy, one of the most severe droughts in recent decades.
 
 # Importing data from June and August 2022
-# June:
+# June 2022:
 year2022jun <- "20220612T100559"
 bands_2022jun <- lapply(bands_drought, function(b) import_crop(year2022jun, b, ext_grave))
 names(bands_2022jun) <- paste0("B", bands_drought)
@@ -180,7 +177,7 @@ stack_2022jun <- c(bands_2022jun$B02, bands_2022jun$B03,
                    bands_2022jun$B04, bands_2022jun$B08, 
                    bands_2022jun$B8A, bands_2022jun$B11, bands_2022jun$B12)
 
-# August:
+# August 2022:
 year2022ago <- "20220821T100559"
 bands_2022ago <- lapply(bands_drought, function(b) import_crop(year2022ago, b, ext_grave))
 names(bands_2022ago) <- paste0("B", bands_drought)
@@ -194,7 +191,7 @@ stack_2022ago <- c(bands_2022ago$B02, bands_2022ago$B03,
                    bands_2022ago$B8A, bands_2022ago$B11, bands_2022ago$B12)
 
 # Importing data from June and August 2019 to compare
-#June:
+# June 2019:
 bands_2019jun <- lapply(bands_drought, function(b) import_crop(year2019jun, b, ext_grave))
 names(bands_2019jun) <- paste0("B", bands_drought)
 
@@ -206,7 +203,7 @@ stack_2019jun <- c(bands_2019jun$B02, bands_2019jun$B03,
                    bands_2019jun$B04, bands_2019jun$B08, 
                    bands_2019jun$B8A, bands_2019jun$B11, bands_2019jun$B12)
 
-# August:
+# August 2019:
 year2019ago <- "20190827T101029"
 bands_2019ago <- lapply(bands_drought, function(b) import_crop(year2019ago, b, ext_grave))
 names(bands_2019ago) <- paste0("B", bands_drought)
@@ -263,8 +260,8 @@ dev.off()
 
 ###### 3) Biodiversity analysis 2025- Grave di Ciano ######
 
-# Importing the area of the Grave which excludes the river bed, in order 
-# for the variance values to not be altered.
+# Importing the area of the Grave which excludes the river bed, in order for the variance values to not be altered.
+# More specifically, this is the area threatened by the expansion project.                       
 bands_2025veg <- lapply(bands, function(b) import_crop(year2025, b, ext_vegetation))
 names(bands_2025veg) <- paste0("B", bands)
 stack_2025veg <- c(bands_2025veg$B02, bands_2025veg$B03, 
@@ -275,8 +272,7 @@ pairs(stack_2025veg)
 
 # Bands 2 (Blue), 3 (Green), and 4 (Red) show strong linear correlations (R ≈ 0.97),
 # while Band 8 (NIR) shows much weaker association.
-# The NIR band provides distinct spectral information, so I use it for the 
-# heterogeneity analysis.
+# The NIR band provides distinct spectral information, so I use it for the  heterogeneity analysis.
 
 # Standard deviation through moving window (focal SD):
 nir <- stack_2025veg$T32TQR_20250601T101041_B08
@@ -287,12 +283,11 @@ plot(sd3, col=magma)
 sd7 <- focal(nir, matrix(1/49, 7, 7), fun = sd)
 plot(sd7, col=magma)
 
-# Principal Component Analysis for the whole stack:
+# Principal Component Analysis (PCA) for the whole stack:
 pc_2025 <- im.pca2(stack_2025veg)
 pc1_2025 <- pc_2025$PC1
 plot(pc1_2025, col=mako)
 
-# Rather small area: I try using the moving window either way
 pc1sd3 <- focal(pc1_2025, matrix(1/9, 3, 3), sd)
 plot(pc1sd3, col=magma)
 
