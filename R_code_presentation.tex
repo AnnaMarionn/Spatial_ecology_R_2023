@@ -1,145 +1,287 @@
 \documentclass{beamer}
-\usepackage{graphicx} % Required for inserting images
-% usetheme function to change layout
+\usepackage{graphicx} 
+\usepackage{tikz}
+\usepackage{listings}
+\usepackage{xcolor}
 
 \usetheme{Frankfurt}
-%
-%
-%change colour of theme
 \usecolortheme{seahorse}
-%
-\title{Spacial analysis of Montello area}
-\author{Marion Anna}
-\date{July 2025}
+
+\title{Spatial analysis of Montello area}
+
+\author{Marion Anna} 
+\date{September 2025}
+
+\titlegraphic{
+\includegraphics[width=\textwidth]{beamer.png}}
 
 \begin{document}
 
 \maketitle
 
-
 \section{Introduction}
 
 \begin{frame}{Area: Montello and Grave di Ciano}
-The Montello hill is a key natural landmark in Veneto, characterized by diverse vegetation and land use patterns. In particular, the Grave di Ciano is a \textbf{protected riverine area}, part of the Natura 2000 network, hosting rare habitats and high biodiversity. With an extension of about 940 hectares, it includes dry grasslands, riparian woodlands, and wet habitats. This area is currently \textbf{threatened} by a proposed flood retention basin project.
-
+The Montello hill is a key natural landmark in Veneto, characterized by diverse vegetation and land use. In particular, the Grave di Ciano is a \textbf{protected riverine area}, part of the Natura 2000 network, hosting rare habitats and high biodiversity. With an extension of about 940 hectares, it includes dry grasslands, riparian woodlands, and wet habitats. This area is currently \textbf{threatened} by a proposed flood retention basin project.
+\begin{columns}
+\begin{column}{0.3\textwidth}
+    \includegraphics[width=\textwidth]{fiore1.jpg}
+    \caption{\footnotesize Ophrys Apifera}
+\end{column}
+\begin{column}{0.3\textwidth}  
+    \begin{center}
+     \includegraphics[width=\textwidth]{fiore3.jpg}
+     \caption{\footnotesize Globularia Cordifolia}
+     \end{center}
+     \end{column}
+   \begin{column}{0.3\textwidth}
+    \includegraphics[width=\textwidth]{stipa.jpg}
+    \caption{\footnotesize Stipa Eriocaulis}
+\end{column}
+\end{columns}
 \end{frame}
 
-\begin{frame}
-\includegraphics[width=1\textwidth]{Real_colors_2024_grave.png}
+
+\begin{frame}{The flood retention basin project (2021)}
+\begin{columns}
+  \begin{column}{0.5\textwidth}
+    \includegraphics[width=\linewidth]{Montello_casse.jpg}
+    \vspace{0.1}
+  \end{column}
+  \begin{column}{0.48\textwidth}
+    \includegraphics[width=\linewidth]{noallecasse.jpg}
+    \vspace{0.2cm}
+    \includegraphics[width=\linewidth]{ciano-una-giornata-per-dire-no-alle-casse-d-espansione_articleimage.jpg}
+    \vspace{0.2cm}
+  \end{column}
+
+\end{columns}
 \end{frame}
+
+
 
 \begin{frame}{Aim of the project}
 This study aims to:
-\begin{itemize}
-        \item Land cover change \\
+\begin{enumerate}
+        \item \textbf{Land cover change} \\
         Analyze land cover changes over recent years in the Montello area.\\
-        - Comparison 2016-2023
+        \begin{itemize}
+            \item Comparison 2016-2023
+            \end{itemize}
         \bigskip
-        \item 2022 drought \\
-        Assess the impact of the 2022 drought on vegetation health in Grave di Ciano.\\
-        - Comparison summer 2019-2022
+        \item \textbf{2022 drought} \\
+        Assess the impact of the 2022 drought on vegetation health in the Grave di Ciano area.\\
+            \begin{itemize}
+                \item Comparison summer 2019-2022
+                \end{itemize}
         \bigskip
-        \item Variability analysis \\
+        \item \textbf{Variability analysis} \\
         Investigate spatial variability and heterogeneity of vegetation in the threatened area \\
-        - Summer 2025
+        \begin{itemize}
+                \item Summer 2025
+                \end{itemize}
         \bigskip
-    \end{itemize}
+    \end{enumerate}
 \end{frame}
 
-\begin{frame}{Data Collection}
-Sentinel 2 - Copernicus Open Hub
-\begin{itemize}
-    \item Select area of interest
-    \item Select dates of interest
-    \item Image format: jp2
-    \item Coordinate system: TM Zone 32N (EPSG:32632)
-    \item Download of all raw bands
-\end{itemize}
+
+\begin{frame}{Material and Methods}
+\begin{columns}
+    \begin{column}{0.6\textwidth}
+        \centering
+        \textbf{Data Collection}
+        \begin{itemize}
+            \item Sentinel 2 - Copernicus Open Hub
+            \item Image format: jp2 (raw bands)
+            \item Coordinate system: TM Zone 32N (EPSG:32632)
+        \end{itemize}
+
+        \textbf{Libraries:} 
+        \begin{itemize}
+            \item    \texttt{library(terra)} 
+            \item    \texttt{library(viridis)} 
+            \item    \texttt{library(imageRy)} 
+            \item    \texttt{library(ggplot2)} 
+        \end{itemize}
+    \end{column}
+
+    \begin{column}{0.4\textwidth}
+        \centering
+        \includegraphics[width=0.6\linewidth]{Sentinel-2_patch_card_full.png}\\ \bigskip
+        \includegraphics[width=0.6\linewidth]{R_logo.svg.png}
+    \end{column}
+\end{columns}
 \end{frame}
 
-\begin{frame}{Libraries}
-To complete the project the following libraries were used:
+\begin{frame}{Custom Import and Crop Function}
     \begin{itemize}
-        \item terra
-        \item imageRy
-        \item ggplot2
-        \item viridis
+        \item Inputs: acquisition date/time code (\texttt{year}), bands to load (\textbf{\texttt{band}}), extent of bounding box (\textbf{\texttt{ext}}), path defined by concatenating function \texttt{paste0()}. 
+        \item Output: a list of \textbf{SpatRaster objects} corresponding to the selected bands and area of interest.
     \end{itemize}
+    \lstinputlisting[language=R, width= \linewidth, basicstyle=\scriptsize]{Import_function_crop.R}  
+    
 \end{frame}
 
 
 \section{Land cover change}
 
 
-\begin{frame}{False color comparison}
+\begin{frame}{2016-2023: vegetation change}
         \centering
-        Plotting false color view to enhance vegetation:
+        By plotting in false color, the expansion of human settlement and the degradation of natural vegetation become evident:\bigskip
+        
         \includegraphics[width=1\textwidth]{FC_comparison.png}
+        \caption{\footnotesize False color view of Montello, June 2016 (left), June 2023 (right)}
 \end{frame}
 
 
 \begin{frame}{Classification using NDVI}
      \centering
-        \begin{equation}
-        NDVI=\frac{NIR-RED}{NIR+RED}
-        \end{equation} 
+     Classification was performed with both unsupervised k-means clustering (\texttt{im.clustering()}) and literature-based NDVI thresholds: Water/Bare Soil (NDVI $<$ 0.2), Stressed Vegetation/Grasslands (0.2 $<$ NDVI $>$ 0.5) and Healthy Vegetation (NDVI $>$ 0.5).
+     
+       % \begin{equation}
+       % NDVI=\frac{NIR-RED}{NIR+RED}
+       % \end{equation} 
+        
     \includegraphics[width=1\textwidth]{NDVIClassification2016-2023.png}
+   
 \end{frame}
 
-\begin{frame}{Land cover change}
+\begin{frame}{Stacked Barplot}
      \centering
     \includegraphics[width=1\textwidth]{Land_cover_change_stackedbarplot.png}
 \end{frame}
 
+
 \section{2022 Drought}
 
-
-\begin{frame}{Grave di Ciano- Bands}
+\begin{frame}{Grave di Ciano affected by drought}
      \centering
-    \includegraphics[width=1\textwidth]{2024_bands.png}
+     In \textbf{summer 2022} the Veneto region, like many other areas in Italy, experienced an \textbf{intense drought}, one of the most severe in recent decades.  \bigskip
+
+     False color composites (B12, B8A, B04) were created to highlight water stress in vegetation, as SWIR reflectance is sensitive to moisture content. \bigskip
+     
+     Gao’s Normalized Difference Water Index (NDWI) was calculated and compared between 2019 and 2022 using NIR and SWIR1 bands.
 \end{frame}
 
 \begin{frame}{Real color comparison}
      \centering
     \includegraphics[width=1\textwidth]{June-August_2019-2022.png}
+    \caption{\footnotesize Real color satellite images of the Grave di Ciano in June (top) and August (bottom) of both 2019 (left) and 2022 (right).}
 \end{frame}
 
 \begin{frame}{Composite SWIR - 2022}
      \centering
-    \includegraphics[width=1\textwidth]{swir_jun_aug.png}
+     Pink/Purple color indicates stressed vegetation (high SWIR values), while green areas are moderately healthy and blue indicates surface water. \bigskip
+     
+     \includegraphics[width=1\textwidth]{swir_jun_aug.png}
+    \caption{\footnotesize {SWIR bands in June (left) and August (right) 2022}}
 \end{frame}
 
 
 \begin{frame}{NDWI (Normalized Difference Water Index) }
      \centering
-     Gao's NDWI (1996). Comparison August 2019-2022
+     Gao's NDWI (1996) estimates vegetation water content and is used to detect drought stress.
      \begin{equation}
         NDWI = \frac{NIR - SWIR2}{NIR +SWIR2}
      \end{equation}
+     
     \includegraphics[width=1\textwidth]{NDWIDiff_19-22.png}
+    \caption{\footnotesize Gao's NDWI Delta: June-August}
 \end{frame}
 
 \section{Variability analysis}
 
+\begin{frame}{Cropped study area, 2025}
+     \centering
+    \begin{itemize}
+        \item Imported Grave di Ciano area excluding the riverbed
+        \item Purpose: avoid distortion of variance values
+        \item Focus: zone directly threatened by expansion project
+    \end{itemize}
+    \includegraphics[width=1\textwidth]{area_tagliata.png}
+\end{frame}
+
 
 \begin{frame}{Bands comparison}
      \centering
+    \begin{itemize}
+        \item Bands 2, 3, 4 (Blue, Green, Red): strong correlation (R ≈ 0.97)
+        \item Band 8 (NIR): weaker correlation → adds distinct spectral info, used for variability analysis
+    \end{itemize}
     \includegraphics[width=1\textwidth]{2025_pairs.png}
 \end{frame}
 
 
 \begin{frame}{Standard Deviation and PCA}
+\centering
+Standard deviation calculated on NIR band and on PC1 through moving window (focal sd).
+
+
+
+\begin{columns}
+    \begin{column}{0.48\textwidth}
+        \centering
+        \includegraphics[width=0.7\textwidth]{mean.png} 
+    \end{column}
+    \begin{column}{0.48\textwidth}
+        \centering
+        \includegraphics[width=0.7\textwidth]{standard_deviation.png} 
+    \end{column}
+\end{columns}
+\end{frame}
+
+
+
+\begin{frame}{Visual Comparison}
     \centering
-    Standard deviation calculated on NIR band and on PC1 through moving window (focal sd).
+    Fine-scale vs. coarse-scale variability for both techniques.
+    \begin{itemize}
+        \item 3×3 window: high local variability, strong edge detection
+        \item 7×7 window: smoother, broader heterogeneity
+    \end{itemize}
+    
     \includegraphics[width=0.9\textwidth]{SD_analysis.png} 
 \end{frame}
 
-\begin{frame}{Thank you for your attention!
- My GitHub profile:\url{https://github.com/AnnaMarionn}
-     \centering}
+\section{Discussion}
+\begin{frame}{Discussion}
+    \begin{itemize}
+        \item The results obtained with this analysis on \texttt{R} are in line with the real situation;
+       \item The Grave di Ciano hosts exceptional species biodiversity, as the area lies at the crossroads of different major biogeographical regions;
+       \item Spatial analyses confirm that the area shows \textbf{strong variability and heterogeneity}, making it sensitive to disturbances such as drought and land cover changes;
+       \item Results highlight the urgent importance of preserving this mosaic of habitats, as their ecological and cultural value outweighs the potential short-term gains of land exploitation.
+    \end{itemize}
     
 \end{frame}
 
+\section{Bibliography}
+
+\begin{frame}{References}
+  \begin{itemize}
+    \item \url{https://graveciano.com/r}  
+    \item Zanatta, Ferraresi (2022) Distribution and diversity of orchid species in Grave di Ciano del Montello (Piave river, NE Italy).
+    \item D.G.R. del Veneto n. 302 (16 marzo 2021)
+    \item Bo-Cai, Gao (1996) NDWI A Normalized Difference Water Index for Remote Sensing of Vegetation Liquid Water From Space REMOTE SENS. ENVIRON. 58:257-266 
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+\centering
+\begin{tikzpicture}
+\node (image) 
+{\includegraphics[width=0.8\textwidth]{Foto grave.jpg}};
+\node
+[
+    fill=teal!60,
+    align=center,
+    text=white,
+    font={\sffamily}
+] at (image.center) {Thank you for your attention!};
+\end{tikzpicture}
+
+My GitHub profile: \url{https://github.com/AnnaMarionn}
+\end{frame}
 
 
 \end{document}
