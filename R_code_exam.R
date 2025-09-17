@@ -33,10 +33,10 @@ cln <- colorRampPalette(c("purple", "pink", "white")) (100)
 # path using paste0() concatenating function (path).
 # Output: a list of SpatRaster objects corresponding to the selected bands and area of interest.
 
-import_crop <- function(year, band, ext, path = ".") 
+import_crop <- function(year, band, ext, path = ".") {
   filename <- file.path(path, paste0("T32TQR_", year, "_B", band, ".jp2"))
   r <- rast(filename)
-  crop(r, ext)
+  crop(r, ext)}
 
 # I define the baseline bands that I will import for each date:
 bands <- c("02", "03", "04", "08")
